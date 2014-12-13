@@ -80,8 +80,9 @@ public class AddGroupAuthorityPatch extends AbstractPatch
                     && authorityService.isAdminAuthority(this.groupAuthorityDetails.adminUserName))
         {
             // Add admin as a member of the created group
-            authorityService.addAuthority(groupAuthorityName,
-                        this.groupAuthorityDetails.adminUserName);
+            String adminUserName = tenantAdminService.getUserDomain(this.groupAuthorityDetails.adminUserName);
+            if (adminUserName != null && adminUserName.length() > 0)
+                authorityService.addAuthority(groupAuthorityName, adminUserName);
         }
         result.append(I18NUtil.getMessage(MSG_RESULT, groupAuthorityName));
 
